@@ -166,9 +166,9 @@ class WebSocketAudioSource(AudioSource):
 
 
 class DiartDiarization:
-    def __init__(self, sample_rate: int = 16000, config : SpeakerDiarizationConfig = None, use_microphone: bool = False, block_duration: float = 1.5, segmentation_model_name: str = "pyannote/segmentation-3.0", embedding_model_name: str = "pyannote/embedding"):
-        segmentation_model = m.SegmentationModel.from_pretrained(segmentation_model_name)
-        embedding_model = m.EmbeddingModel.from_pretrained(embedding_model_name)
+    def __init__(self, sample_rate: int = 16000, config : SpeakerDiarizationConfig = None, use_microphone: bool = False, block_duration: float = 1.5, segmentation_model: str = "pyannote/segmentation-3.0", embedding_model: str = "pyannote/embedding"):
+        segmentation_model = m.SegmentationModel.from_pretrained(segmentation_model)
+        embedding_model = m.EmbeddingModel.from_pretrained(embedding_model)
         
         if config is None:
             config = SpeakerDiarizationConfig(
