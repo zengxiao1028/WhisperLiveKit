@@ -6,10 +6,11 @@ import time
 from queue import Empty, SimpleQueue
 from typing import Any, List, Tuple
 
-import torch
+from torch.torch_version import TorchVersion
 from pyannote.audio.core.task import Specifications, Problem
 import omegaconf
-torch.serialization.add_safe_globals([torch.torch_version.TorchVersion, Specifications, Problem, omegaconf.listconfig.ListConfig, omegaconf.base.ContainerMetadata, Any, list])
+from collections import defaultdict
+torch.serialization.add_safe_globals([TorchVersion, Specifications, Problem, omegaconf.listconfig.ListConfig, omegaconf.base.ContainerMetadata, Any, list, defaultdict])
 import diart.models as m
 import numpy as np
 from diart import SpeakerDiarization, SpeakerDiarizationConfig
