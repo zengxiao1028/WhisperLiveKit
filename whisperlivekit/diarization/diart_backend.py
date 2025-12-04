@@ -11,7 +11,7 @@ from torch.torch_version import TorchVersion
 from pyannote.audio.core.task import Specifications, Problem
 import omegaconf
 from collections import defaultdict
-torch.serialization.add_safe_globals([TorchVersion, Specifications, Problem, omegaconf.listconfig.ListConfig, omegaconf.base.ContainerMetadata, Any, list, defaultdict])
+torch.serialization.add_safe_globals([TorchVersion, Specifications, Problem, omegaconf.listconfig.ListConfig, omegaconf.base.ContainerMetadata, Any, list, defaultdict, dict])
 import diart.models as m
 import numpy as np
 from diart import SpeakerDiarization, SpeakerDiarizationConfig
