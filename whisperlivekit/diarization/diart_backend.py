@@ -7,7 +7,8 @@ from queue import Empty, SimpleQueue
 from typing import Any, List, Tuple
 
 import torch
-torch.serialization.add_safe_globals([torch.torch_version.TorchVersion])
+from pyannote.audio.core.task import Specifications
+torch.serialization.add_safe_globals([torch.torch_version.TorchVersion, Specifications])
 import diart.models as m
 import numpy as np
 from diart import SpeakerDiarization, SpeakerDiarizationConfig
