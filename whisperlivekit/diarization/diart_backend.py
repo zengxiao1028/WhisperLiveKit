@@ -6,6 +6,7 @@ import time
 from queue import Empty, SimpleQueue
 from typing import Any, List, Tuple
 
+import torch
 from torch.torch_version import TorchVersion
 from pyannote.audio.core.task import Specifications, Problem
 import omegaconf
