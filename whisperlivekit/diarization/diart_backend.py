@@ -9,7 +9,7 @@ from typing import Any, List, Tuple
 import torch
 from pyannote.audio.core.task import Specifications, Problem
 import omegaconf
-torch.serialization.add_safe_globals([torch.torch_version.TorchVersion, Specifications, Problem, omegaconf.listconfig.ListConfig, omegaconf.base.ContainerMetadata])
+torch.serialization.add_safe_globals([torch.torch_version.TorchVersion, Specifications, Problem, omegaconf.listconfig.ListConfig, omegaconf.base.ContainerMetadata, Any])
 import diart.models as m
 import numpy as np
 from diart import SpeakerDiarization, SpeakerDiarizationConfig
