@@ -166,10 +166,10 @@ class WebSocketAudioSource(AudioSource):
 
 
 class DiartDiarization:
-    def __init__(self, sample_rate: int = 16000, config : SpeakerDiarizationConfig = None, use_microphone: bool = False, block_duration: float = 1.5, segmentation_model: str = "pyannote/segmentation-3.0", embedding_model: str = "pyannote/embedding"):
+    def __init__(self, sample_rate: int = 16000, config : SpeakerDiarizationConfig = None, use_microphone: bool = False, block_duration: float = 0.5, segmentation_model: str = "pyannote/segmentation-3.0", embedding_model: str = "hbredin/wespeaker-voxceleb-resnet34-LM"):
         segmentation_model = m.SegmentationModel.from_pretrained(segmentation_model)
         embedding_model = m.EmbeddingModel.from_pretrained(embedding_model)
-        
+
         if config is None:
             config = SpeakerDiarizationConfig(
                 segmentation=segmentation_model,
@@ -202,13 +202,21 @@ class DiartDiarization:
     def insert_silence(self, silence_duration):
         self.observer.global_time_offset += silence_duration
 
-    async def diarize(self, pcm_array: np.ndarray):
+    def insert_audio_chunk(self, pcm_array: np.ndarray):
         """
-        Process audio data for diarization.
+        Insert audio chunk for diarization processing.
         Only used when working with WebSocketAudioSource.
         """
         if self.custom_source:
-            self.custom_source.push_audio(pcm_array)            
+            self.custom_source.push_audio(pcm_array)
+
+    async def diarize(self):
+        """
+        Get current diarization segments.
+        Returns the segments collected by the observer.
+        """
+        # Return current segments from observer
+        return self.observer.get_segments()
         # self.observer.clear_old_segments()        
 
     def close(self):

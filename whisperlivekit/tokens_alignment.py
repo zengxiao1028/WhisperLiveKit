@@ -1,3 +1,4 @@
+import re
 from time import time
 from typing import Any, List, Optional, Tuple, Union
 
@@ -154,7 +155,12 @@ class TokensAlignment:
                         intersec = self.intersection_duration(punctuation_segment, diarization_segment)
                         if intersec > max_overlap:
                             max_overlap = intersec
-                            max_overlap_speaker = diarization_segment.speaker + 1
+                            # Extract numeric speaker ID if it's a string, otherwise use as-is
+                            speaker_id = diarization_segment.speaker
+                            if isinstance(speaker_id, str):
+                                match = re.search(r'\d+', speaker_id)
+                                speaker_id = int(match.group()) if match else 0
+                            max_overlap_speaker = speaker_id + 1
                     punctuation_segment.speaker = max_overlap_speaker
         
         segments = []

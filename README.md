@@ -45,6 +45,26 @@ pip install whisperlivekit
 > You can also clone the repo and `pip install -e .` for the latest version.
 
 #### Quick Start
+0. **Run Docker HTTPS**
+
+```bash
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout server.key -out server.crt
+# Fill in the prompts; use localhost or your local IP as the Common Name.
+
+docker build -t wlk .
+
+docker run --gpus all -p 8000:8000 --name wlk \
+  -v ./server.crt:/certs/server.crt \
+  -v ./server.key:/certs/server.key \
+  -e TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD='true' \
+  -e HF_TOKEN=${HF_TOKEN} \
+  wlk --model large-v3-turbo --language en \
+  --diarization --diarization-backend diart \
+  --embedding-model hbredin/wespeaker-voxceleb-resnet34-LM \
+  --segmentation-model pyannote/segmentation-3.0 \
+  --ssl-certfile /certs/server.crt --ssl-keyfile /certs/server.key  
+```
+
 1. **Start the transcription server:**
    ```bash
    wlk --model base --language en

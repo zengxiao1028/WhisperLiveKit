@@ -28,22 +28,27 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN pip3 install --upgrade pip setuptools wheel && \
     pip3 --disable-pip-version-check install --timeout=120 --retries=5 \
         --index-url https://download.pytorch.org/whl/cu129 \
-        torch torchaudio \
+        torch==2.8.0 torchaudio==2.8.0 torchvision==0.23.0 \
     || (echo "Initial install failed — retrying with extended timeout..." && \
         pip3 --disable-pip-version-check install --timeout=300 --retries=3 \
             --index-url https://download.pytorch.org/whl/cu129 \
-            torch torchvision torchaudio)
+            torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0)
 
 COPY . .
 
 # Install WhisperLiveKit directly, allowing for optional dependencies
-RUN if [ -n "$EXTRAS" ]; then \
-      echo "Installing with extras: [$EXTRAS]"; \
-      pip install --no-cache-dir whisperlivekit[$EXTRAS]; \
-    else \
-      echo "Installing base package only"; \
-      pip install --no-cache-dir whisperlivekit; \
-    fi
+#RUN if [ -n "$EXTRAS" ]; then \
+#      echo "Installing with extras: [$EXTRAS]"; \
+#      pip install --no-cache-dir whisperlivekit[$EXTRAS]; \
+#    else \
+#      echo "Installing base package only"; \
+#      pip install --no-cache-dir whisperlivekit; \
+#    fi
+
+RUN pip install "git+https://github.com/zengxiao1028/WhisperLiveKit.git"
+RUN pip install faster-whisper
+RUN pip install "git+https://github.com/NVIDIA/NeMo.git@main#egg=nemo_toolkit[asr]"
+RUN pip install --upgrade diart pyaudio
 
 # In-container caching for Hugging Face models by: 
 # A) Make the cache directory persistent via an anonymous volume.
